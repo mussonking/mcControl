@@ -14,7 +14,7 @@ complete_install () {
 				cp $pwd/urlRepos.txt /etc/mccontrol/urlRepos.txt
 #				cp $pwd/ALLFILENAME /etc/mccontrol/FILENAME
 #				-->> copy all SOURCE files i will need
-				echo "What is your MultiCraft main Path? eg: /home/minecraft/multicraft/"
+				echo "What is your MultiCraft main Path? eg: /home/minecraft/multicraft"
 					read multicraft_path 
 					replacement=s:mc_path=.*:mc_path=$multicraft_path:
 					sed -i $replacement /etc/mccontrol/config.cfg
@@ -28,6 +28,8 @@ complete_install () {
 								source /etc/mccontrol/config.cfg
 					mkdir -p $mc_path/plugins
 					chmod 755 -R /etc/mccontrol/
+					chmod 777 /etc/mccontrol/config.cfg
+					chmod 777 /etc/mccontrol/urlRepos.txt
 }
 
 pwd=`pwd`

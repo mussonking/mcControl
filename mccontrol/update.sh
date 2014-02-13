@@ -9,9 +9,12 @@ source /etc/mccontrol/urlRepos.txt
 pluginname=$2
 URL=$3
 
-add_plugin () {
+update_plugin () {
+if [ -z $filename ]
+	then
+		echo "You need to specify a File name to Update"
 #If the file is not .jar
-if [ $pluginname == "list" ]
+elif [ $pluginname == "list" ]
 #if 'list' is triggered
 	then
 		ls $mc_path/plugins
@@ -34,11 +37,13 @@ elif [[ $pluginname != *.jar* ]]
 					echo "This plugin does NOT already exist. Use - add - instead."
 				else
 				#if there is no URL specified
-					if [ [ $# != 3 ] ]
+					if [ -z $URL ]
 						then
-							if [ [ ${$pluginname} ] ]
+						pluginnamemjar=${pluginname%%????}
+							if [ ${pluginnamemjar} ]
 								then
-									wget -O $mc_path/plugins/$pluginname ${$pluginname}
+									urlns=${!pluginnamemjar}
+									wget -O $mc_path/plugins/$pluginname $urlns
 								if [ $? -ne 0 ]
 									then
 										echo "There was an error while Updating your plugin"
@@ -48,7 +53,7 @@ elif [[ $pluginname != *.jar* ]]
 							else
 								echo "This plugin doesnt have a static URL. You need to specify it."
 							fi
-					elif [ [ $# == 3 ] ]
+					elif [ -n $URL ]
 						then
 							wget -O $mc_path/plugins/$pluginname $URL
 								if [ $? -ne 0 ]

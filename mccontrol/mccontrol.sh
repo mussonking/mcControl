@@ -12,13 +12,13 @@ optionchoice=$1
 
 if [ $optionchoice == "add" ]
 	then
-		add_file
+		add_file $arg2 $arg3 $arg4
 elif [ $optionchoice == "update" ]
 	then
-		update_plugin
+		update_plugin $arg2 $arg3
 elif [ $optionchoice == "push" ]
 	then
-		push_plugin
+		push_plugin $arg2 $arg3
 		
 	
 

@@ -6,9 +6,14 @@
 pluginname=$2
 ServerID=$3
 
+source /etc/mccontrol/config.cfg
+
 push_plugin () {
+if [ -z $filename ]
+	then
+		echo "You need to specify a File name to Push"
 #If the file is not .jar
-if [ $pluginname == "list" ]
+elif [ $pluginname == "list" ]
 #if 'list' is triggered
 	then
 		ls $mc_path/plugins
@@ -28,14 +33,14 @@ elif [[ $pluginname != *.jar* ]]
 			echo "This plugin does NOT already exist. Use - add - instead."
 	else
 	#if there is no URL specified
-		if [ [ $# != 3 ] ]
+		if [ -z $ServerID ]
 			then
 				echo "You need to specify a ServerID"
-		elif [[ $ServerID != *[!0-9]* ]] && [ [ $# == 3 ] ]
+		elif [[ $ServerID != *[!0-9]* ]] && [ -n $ServerID ]
 			then
-				if [ -e $mc_path/servers/server$ServerID ]
+				if [ ! -d $mc_path/servers/server$ServerID ]
 					then
-						echo"The specified server does not exist."
+						echo "The specified server does not exist."
 				else
 				cp $mc_path/plugins/$pluginname $mc_path/servers/server$ServerID/plugins/$pluginname
 					if [ $? -ne 0 ]
@@ -45,7 +50,7 @@ elif [[ $pluginname != *.jar* ]]
 						echo "..Plugin was Updated"
 					fi
 				fi
-		elif [ $ServerID == "all" ] && [ [ $# == 3 ] ]
+		elif [ $ServerID == "all" ] && [ -n $ServerID ]
 			then
 				for i in "${serversIDarray[@]}"
 					do
